@@ -112,8 +112,8 @@ public class BankingService {
     }
 
     private void withdrawMoney(User user) throws InvalidAmountException {
-        System.out.println("Enter amount to withdraw:");
-        BigDecimal amount = getAmount();
+        System.out.print("Enter amount to withdraw from savings account: $");
+        BigDecimal amount = getAmount("Withdrawal failed");
         user.getSavingsAccount().withdraw(amount);
         user.setCash(user.getCash().add(amount));
         System.out.println("Withdrew " + amount + " from savings.");
@@ -175,10 +175,14 @@ public class BankingService {
     }
 
     private BigDecimal getAmount() throws InvalidAmountException {
+        return getAmount("Deposit failed");
+    }
+
+    private BigDecimal getAmount(String errorPrefix) throws InvalidAmountException {
         if (!scanner.hasNextLine()) throw new InvalidAmountException("No input");
         try {
             BigDecimal amount = new BigDecimal(scanner.nextLine().trim());
-            if (amount.compareTo(BigDecimal.ZERO) <= 0) throw new InvalidAmountException("Deposit failed: amount must be positive");
+            if (amount.compareTo(BigDecimal.ZERO) <= 0) throw new InvalidAmountException(errorPrefix + ": amount must be positive");
             return amount;
         } catch (NumberFormatException e) {
             throw new InvalidAmountException("Invalid amount format");
