@@ -29,13 +29,11 @@ public class BankingService {
             User user = users.get(username);
             if (user != null) {
                 System.out.print("Welcome, " + user.getName() + "!");
-                System.out.println();
                 if (!handleUserSession(user)) {
                     return;
                 }
             } else {
-                System.out.println("User not found.");
-                System.out.println();
+                System.out.println("User not found. Please try again.");
             }
         }
     }
@@ -62,7 +60,7 @@ public class BankingService {
                     case "9":
                         System.out.println("Thank you for using our banking app. Goodbye!");
                         return false; // Exit
-                    default: System.out.println("Invalid option.");
+                    default: System.out.println("Invalid choice. Please try again.");
                     System.out.println();
                 }
             } catch (InvalidAmountException e) {
@@ -91,12 +89,9 @@ public class BankingService {
         user.getSavingsAccount().applyInterest();
         user.getInvestmentAccount().applyGrowth();
 
-        System.out.println("Cash: " + user.getCash());
-        System.out.println("Savings: " + user.getSavingsAccount().getBalance());
-        System.out.println("Investment: " + user.getInvestmentAccount().getBalance());
-        for (Fund fund : Fund.values()) {
-            System.out.println(fund + ": " + user.getInvestmentAccount().getFundBalance(fund));
-        }
+        System.out.println("Savings account balance: $" + user.getSavingsAccount().getBalance());
+        System.out.println("Investment account balance:");
+        System.out.printf("* Not Invested: $%.2f\n", user.getInvestmentAccount().getBalance());
     }
 
     private void depositMoney(User user) throws InvalidAmountException {
