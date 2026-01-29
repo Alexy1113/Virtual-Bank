@@ -29,6 +29,7 @@ public class BankingService {
             User user = users.get(username);
             if (user != null) {
                 System.out.print("Welcome, " + user.getName() + "!");
+                System.out.println();
                 if (!handleUserSession(user)) {
                     return;
                 }
