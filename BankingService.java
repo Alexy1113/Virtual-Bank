@@ -62,7 +62,6 @@ public class BankingService {
                         System.out.println("Thank you for using our banking app. Goodbye!");
                         return false; // Exit
                     default: System.out.println("Invalid choice. Please try again.");
-                    System.out.println();
                 }
             } catch (InvalidAmountException e) {
                 System.out.println(e.getMessage());
