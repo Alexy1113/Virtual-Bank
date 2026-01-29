@@ -95,14 +95,20 @@ public class BankingService {
     }
 
     private void depositMoney(User user) throws InvalidAmountException {
-        System.out.println("Enter amount to deposit:");
-        BigDecimal amount = getAmount();
-        if (user.getCash().compareTo(amount) < 0) {
-            throw new InvalidAmountException("Insufficient funds in cash");
+        System.out.print("Enter amount to deposit to savings account: $");
+        try {
+            BigDecimal amount = getAmount();
+            if (user.getCash().compareTo(amount) < 0) {
+                throw new InvalidAmountException("Insufficient funds in cash");
+            }
+            user.setCash(user.getCash().subtract(amount));
+            user.getSavingsAccount().deposit(amount);
+            System.out.println("Deposited " + amount + " to savings.");
+        } catch (InvalidAmountException e) {
+            if (!"Invalid amount format".equals(e.getMessage())) {
+                throw e;
+            }
         }
-        user.setCash(user.getCash().subtract(amount));
-        user.getSavingsAccount().deposit(amount);
-        System.out.println("Deposited " + amount + " to savings.");
     }
 
     private void withdrawMoney(User user) throws InvalidAmountException {
