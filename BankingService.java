@@ -99,7 +99,7 @@ public class BankingService {
         try {
             BigDecimal amount = getAmount();
             if (user.getCash().compareTo(amount) < 0) {
-                throw new InvalidAmountException("Insufficient funds in cash");
+                throw new InvalidAmountException("Deposit failed: Insufficient cash on hand");
             }
             user.setCash(user.getCash().subtract(amount));
             user.getSavingsAccount().deposit(amount);
