@@ -12,7 +12,6 @@ public class BankingService {
         users.put("Bob", new User("Bob"));
         users.put("Charlie", new User("Charlie"));
         users.put("Diana", new User("Diana"));
-        users.put("Alex", new User("Alex"));
     }
 
     public void run() {
