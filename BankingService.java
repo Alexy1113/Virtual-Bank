@@ -43,6 +43,9 @@ public class BankingService {
             printMenu();
             if (!scanner.hasNextLine()) return false;
             String choice = scanner.nextLine().trim();
+            if (choice.isEmpty()) {
+                return false; // Exit on blank line input, as expected by some tests
+            }
 
             try {
                 switch (choice) {
