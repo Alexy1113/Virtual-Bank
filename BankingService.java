@@ -17,7 +17,7 @@ public class BankingService {
 
     public void run() {
         while (true) {
-            System.out.println("Enter your name to login:");
+            System.out.print("Enter your name to login:");
             if (!scanner.hasNextLine()) return;
             String username = scanner.nextLine().trim();
 
