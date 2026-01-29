@@ -114,9 +114,13 @@ public class BankingService {
     private void withdrawMoney(User user) throws InvalidAmountException {
         System.out.print("Enter amount to withdraw from savings account: $");
         BigDecimal amount = getAmount("Withdrawal failed");
-        user.getSavingsAccount().withdraw(amount);
-        user.setCash(user.getCash().add(amount));
-        System.out.println("Withdrew " + amount + " from savings.");
+        try {
+            user.getSavingsAccount().withdraw(amount);
+            user.setCash(user.getCash().add(amount));
+            System.out.println("Withdrew " + amount + " from savings.");
+        } catch (InvalidAmountException e) {
+            throw new InvalidAmountException("Withdrawal failed: " + e.getMessage());
+        }
     }
 
     private void sendMoney(User user) throws InvalidAmountException {
