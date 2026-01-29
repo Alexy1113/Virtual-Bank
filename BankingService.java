@@ -17,18 +17,21 @@ public class BankingService {
 
     public void run() {
         while (true) {
-            System.out.println("Enter your name to login:");
+            System.out.print("Enter your name to login: ");
+            System.out.println();
             if (!scanner.hasNextLine()) return;
             String username = scanner.nextLine().trim();
 
             User user = users.get(username);
             if (user != null) {
-                System.out.println("Welcome, " + user.getName() + "!");
+                System.out.print("Welcome, " + user.getName() + "!");
+                System.out.println();
                 if (!handleUserSession(user)) {
                     return;
                 }
             } else {
                 System.out.println("User not found.");
+                System.out.println();
             }
         }
     }
@@ -49,10 +52,14 @@ public class BankingService {
                     case "6": transferBetweenAccounts(user); break;
                     case "7": withdrawAllInvestments(user); break;
                     case "8":
-                        System.out.println("You have been logged out.");
+                        System.out.print("You have been logged out.");
+                        System.out.println();
                         return true; // Logout
-                    case "9": return false; // Exit
+                    case "9":
+                        System.out.println("Thank you for using our banking app. Goodbye!");
+                        return false; // Exit
                     default: System.out.println("Invalid option.");
+                    System.out.println();
                 }
             } catch (InvalidAmountException e) {
                 System.out.println(e.getMessage());
@@ -73,7 +80,7 @@ public class BankingService {
         System.out.println("7. Withdraw all investments");
         System.out.println("8. Logout");
         System.out.println("9. Exit");
-        System.out.println("Enter your choice:");
+        System.out.print("Enter your choice: ");
     }
 
     private void showBalance(User user) {
@@ -166,7 +173,7 @@ public class BankingService {
         if (!scanner.hasNextLine()) throw new InvalidAmountException("No input");
         try {
             BigDecimal amount = new BigDecimal(scanner.nextLine().trim());
-            if (amount.compareTo(BigDecimal.ZERO) <= 0) throw new InvalidAmountException("Amount must be positive");
+            if (amount.compareTo(BigDecimal.ZERO) <= 0) throw new InvalidAmountException("Deposit failed: amount must be positive");
             return amount;
         } catch (NumberFormatException e) {
             throw new InvalidAmountException("Invalid amount format");
