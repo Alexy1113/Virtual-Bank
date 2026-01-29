@@ -117,7 +117,7 @@ public class BankingService {
         try {
             user.getSavingsAccount().withdraw(amount);
             user.setCash(user.getCash().add(amount));
-            System.out.println("Withdrew " + amount + " from savings.");
+            System.out.println("Withdrawal successful.");
         } catch (InvalidAmountException e) {
             throw new InvalidAmountException("Withdrawal failed: " + e.getMessage());
         }
