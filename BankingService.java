@@ -103,7 +103,7 @@ public class BankingService {
             }
             user.setCash(user.getCash().subtract(amount));
             user.getSavingsAccount().deposit(amount);
-            System.out.println("Deposited " + amount + " to savings.");
+            System.out.println("Deposit successful.");
         } catch (InvalidAmountException e) {
             if (!"Invalid amount format".equals(e.getMessage())) {
                 throw e;
