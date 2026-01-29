@@ -153,36 +153,54 @@ public class BankingService {
     }
 
     private void investInFunds(User user) throws InvalidAmountException {
-        System.out.println("Select fund (1. LOW_RISK, 2. MEDIUM_RISK, 3. HIGH_RISK):");
+        System.out.println("Available funds:");
+        for (Fund f : Fund.values()) {
+            System.out.println(f.name());
+        }
+        System.out.print("Enter fund to invest in: ");
         if (!scanner.hasNextLine()) return;
         String choice = scanner.nextLine().trim();
-        Fund fund = choice.equals("1") ? Fund.LOW_RISK : choice.equals("2") ? Fund.MEDIUM_RISK : choice.equals("3") ? Fund.HIGH_RISK : null;
-        if (fund == null) {
+        Fund fund;
+        try {
+            fund = Fund.valueOf(choice.toUpperCase());
+        } catch (IllegalArgumentException e) {
             System.out.println("Invalid fund selection.");
             return;
         }
-        System.out.println("Enter amount to invest:");
-        BigDecimal amount = getAmount();
-        user.getInvestmentAccount().invest(fund, amount);
-        System.out.println("Invested " + amount + " in " + fund);
+        System.out.print("Enter amount to invest: $");
+        BigDecimal amount = getAmount("Investment failed");
+        try {
+            user.getInvestmentAccount().invest(fund, amount);
+            System.out.println("Successfully invested $" + amount + " in " + fund.name() + " fund.");
+        } catch (InvalidAmountException e) {
+            throw new InvalidAmountException("Investment failed: " + e.getMessage());
+        }
     }
 
     private void transferBetweenAccounts(User user) throws InvalidAmountException {
-        System.out.println("1. Savings to Investment\n2. Investment to Savings");
+        System.out.println("1. Transfer from savings to investment");
+        System.out.println("2. Transfer from investment to savings");
+        System.out.print("Enter your choice: ");
         if (!scanner.hasNextLine()) return;
         String direction = scanner.nextLine().trim();
-        System.out.println("Enter amount:");
-        BigDecimal amount = getAmount();
-        if ("1".equals(direction)) {
-            user.getSavingsAccount().withdraw(amount);
-            user.getInvestmentAccount().deposit(amount);
-            System.out.println("Transferred " + amount + " to Investment.");
-        } else if ("2".equals(direction)) {
-            user.getInvestmentAccount().withdraw(amount);
-            user.getSavingsAccount().deposit(amount);
-            System.out.println("Transferred " + amount + " to Savings.");
-        } else {
-            System.out.println("Invalid direction.");
+        if (!"1".equals(direction) && !"2".equals(direction)) {
+            System.out.println("Invalid choice.");
+            return;
+        }
+        System.out.print("Enter amount to transfer: $");
+        BigDecimal amount = getAmount("Transfer failed");
+        try {
+            if ("1".equals(direction)) {
+                user.getSavingsAccount().withdraw(amount);
+                user.getInvestmentAccount().deposit(amount);
+                System.out.println("Successfully transferred $" + amount + " to investment account.");
+            } else { // It must be "2"
+                user.getInvestmentAccount().withdraw(amount);
+                user.getSavingsAccount().deposit(amount);
+                System.out.println("Successfully transferred $" + amount + " to savings account.");
+            }
+        } catch (InvalidAmountException e) {
+            throw new InvalidAmountException("Transfer failed: " + e.getMessage());
         }
     }
 
