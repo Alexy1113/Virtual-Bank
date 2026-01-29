@@ -17,12 +17,13 @@ public class BankingService {
 
     public void run() {
         while (true) {
-            System.out.println("Enter username to login:");
+            System.out.println("Enter your name to login:");
             if (!scanner.hasNextLine()) return;
             String username = scanner.nextLine().trim();
 
             User user = users.get(username);
             if (user != null) {
+                System.out.println("Welcome, " + user.getName() + "!");
                 if (!handleUserSession(user)) {
                     return;
                 }
@@ -62,7 +63,7 @@ public class BankingService {
     }
 
     private void printMenu() {
-        System.out.println("\n --- Banking App Menu ---");
+        System.out.println("\n--- Banking App Menu ---");
         System.out.println("1. Show balance");
         System.out.println("2. Deposit money");
         System.out.println("3. Withdraw money");
@@ -72,6 +73,7 @@ public class BankingService {
         System.out.println("7. Withdraw all investments");
         System.out.println("8. Logout");
         System.out.println("9. Exit");
+        System.out.println("Enter your choice:");
     }
 
     private void showBalance(User user) {
