@@ -124,19 +124,29 @@ public class BankingService {
     }
 
     private void sendMoney(User user) throws InvalidAmountException {
-        System.out.println("Enter recipient username:");
+        System.out.println("Available recipients:");
+
+        java.util.List<String> recipientNames = new java.util.ArrayList<>(users.keySet());
+        recipientNames.remove(user.getName());
+        java.util.Collections.sort(recipientNames);
+
+        for (String name : recipientNames) {
+            System.out.println(name);
+        }
+
+        System.out.print("Enter recipient's name: ");
         if (!scanner.hasNextLine()) return;
         String recipientName = scanner.nextLine().trim();
         User recipient = users.get(recipientName);
-        if (recipient == null) {
-            System.out.println("User not found.");
+        if (recipient == null || recipient.getName().equals(user.getName())) {
+            System.out.println("Invalid recipient.");
             return;
         }
-        System.out.println("Enter amount to send:");
-        BigDecimal amount = getAmount();
-        user.getSavingsAccount().withdraw(amount);
+        System.out.print("Enter amount to send: ");
+        BigDecimal amount = getAmount("Send failed");
+        user.getSavingsAccount().withdraw(amount); // This might throw insufficient funds
         recipient.getSavingsAccount().deposit(amount);
-        System.out.println("Sent " + amount + " to " + recipientName);
+        System.out.println("Sent " + amount + " to " + recipientName + ".");
     }
 
     private void investInFunds(User user) throws InvalidAmountException {
