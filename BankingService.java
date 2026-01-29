@@ -141,11 +141,15 @@ public class BankingService {
             System.out.println("Invalid recipient.");
             return;
         }
-        System.out.print("Enter amount to send: ");
-        BigDecimal amount = getAmount("Send failed");
-        user.getSavingsAccount().withdraw(amount); // This might throw insufficient funds
-        recipient.getSavingsAccount().deposit(amount);
-        System.out.println("Sent " + amount + " to " + recipientName + ".");
+        System.out.print("Enter amount to send: $");
+        BigDecimal amount = getAmount("Failed to send money");
+        try {
+            user.getSavingsAccount().withdraw(amount);
+            recipient.getSavingsAccount().deposit(amount);
+            System.out.println("Sent $" + amount + " to " + recipientName);
+        } catch (InvalidAmountException e) {
+            throw new InvalidAmountException("Failed to send money: " + e.getMessage());
+        }
     }
 
     private void investInFunds(User user) throws InvalidAmountException {
