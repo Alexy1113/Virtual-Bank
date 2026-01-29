@@ -18,7 +18,12 @@ public class BankingService {
     public void run() {
         while (true) {
             System.out.print("Enter your name to login:");
-            if (!scanner.hasNextLine()) return;
+            if (!scanner.hasNextLine()) {
+                if (scanner.hasNext()) {
+                    System.out.println("Error: unexpected end of input.");
+                }
+                return;
+            }
             String username = scanner.nextLine().trim();
 
             User user = users.get(username);
